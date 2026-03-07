@@ -13,3 +13,25 @@ function handleLogin() {
     alert('Wrong username or password');
   }
 }
+
+
+async function fetchIssues() {
+  showLoader(true);
+
+  try {
+    const res = await fetch(
+      'https://phi-lab-server.vercel.app/api/v1/lab/issues',
+    );
+
+    const data = await res.json();
+
+    allIssues = data.data ? data.data : data;
+
+    displayIssues(allIssues);
+  } catch (error) {
+    console.log(error);
+  }
+
+  showLoader(false);
+}
+
