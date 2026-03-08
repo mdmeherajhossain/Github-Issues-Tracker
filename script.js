@@ -14,7 +14,6 @@ function handleLogin() {
   }
 }
 
-
 async function fetchIssues() {
   showLoader(true);
 
@@ -212,4 +211,63 @@ ${issue.status?.toLowerCase() === 'open' ? 'Opened' : 'Closed'}
   `;
 
   modal.classList.remove('hidden');
+}
+
+function closeModal() {
+  document.getElementById('issue-modal').classList.add('hidden');
+}
+
+async function loadIssueDetails(id) {
+  showLoader(true);
+
+  try {
+    const res = await fetch(
+      `https://phi-lab-server.vercel.app/api/v1/lab/issue/${id}`,
+    );
+
+    const data = await res.json();
+
+    const issue = data.data ? data.data : data;
+
+    showLoader(false);
+
+    showModal(issue);
+  } catch (error) {
+    console.log(error);
+
+    showLoader(false);
+  }
+}
+
+function showLoader(status) {
+  const loader = document.getElementById('loader');
+
+  loader.classList.toggle('hidden', !status);
+}
+
+async function searchIssues() {
+  const text = document.getElementById('search-input').value;
+
+  if (text.trim() === '') {
+    displayIssues(allIssues);
+    return;
+  }
+
+  showLoader(true);
+
+  try {
+    const res = await fetch(
+      `https://phi-lab-server.vercel.app/api/v1/lab/issues/search?q=${text}`,
+    );
+
+    const data = await res.json();
+
+    const issues = data.data ? data.data : data;
+
+    displayIssues(issues);
+  } catch (error) {
+    console.log(error);
+  }
+
+  showLoader(false);
 }
