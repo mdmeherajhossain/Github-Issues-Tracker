@@ -142,3 +142,74 @@ function filterIssues(status) {
   }
 }
 
+function showModal(issue) {
+  const modal = document.getElementById('issue-modal');
+  const content = document.getElementById('modal-content');
+
+  content.innerHTML = `
+  <div class="bg-white rounded-xl p-6 w-[520px] shadow-2xl">
+
+    <h2 class="text-2xl font-bold text-gray-800 mb-2">
+      ${issue.title}
+    </h2>
+
+    <div class="flex items-center gap-2 text-sm text-gray-500 mb-4">
+      <span class="flex items-center gap-1 px-3 py-0.5 rounded-full text-xs font-semibold text-white
+${issue.status?.toLowerCase() === 'open' ? 'bg-green-500' : 'bg-purple-500'}">
+
+<i class="fa-regular fa-circle-dot"></i> 
+${issue.status?.toLowerCase() === 'open' ? 'Opened' : 'Closed'}
+
+</span>
+      <span>• Opened by ${issue.author} • ${issue.date || '22/02/2026'}</span>
+    </div>
+
+    <div class="flex gap-2 mb-5">
+      <span class="flex items-center gap-1 bg-red-100 text-red-600 text-xs font-bold px-3 py-1 rounded-full">
+        <i class="fa-solid fa-bug"></i> BUG
+      </span>
+
+      <span class="flex items-center gap-1 bg-yellow-100 text-yellow-700 text-xs font-bold px-3 py-1 rounded-full">
+        <i class="fa-solid fa-handshake"></i> HELP WANTED
+      </span>
+    </div>
+
+    <p class="text-gray-600 text-sm leading-relaxed mb-6">
+      ${issue.description}
+    </p>
+
+    <div class="bg-gray-100 rounded-lg p-4 flex items-center gap-24">
+
+      <div>
+        <p class="text-xs text-gray-400 font-semibold">Assignee:</p>
+        <p class="font-bold text-gray-800">${issue.author}</p>
+      </div>
+
+      <div class="text-right">
+        <p class="text-xs text-gray-400 font-semibold">Priority:</p>
+        <span class="inline-block mt-1 px-3 py-1 rounded-full text-xs font-bold text-white
+        ${
+          issue.priority === 'HIGH'
+            ? 'bg-red-500'
+            : issue.priority === 'MEDIUM'
+              ? 'bg-[#FF6347]'
+              : 'bg-red-500'
+        }">
+          ${issue.priority}
+        </span>
+      </div>
+
+    </div>
+
+    <div class="flex justify-end mt-6">
+      <button onclick="closeModal()" 
+      class="bg-purple-600 hover:bg-purple-700 text-white px-5 py-2 rounded-md text-sm font-semibold shadow">
+        Close
+      </button>
+    </div>
+
+  </div>
+  `;
+
+  modal.classList.remove('hidden');
+}
